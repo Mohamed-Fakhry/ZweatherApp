@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">ZWeatherApp</string>
+
+    <string name="title_gps">GPS Closed</string>
+    <string name="detalis_dialog_Gps">please Open GPS to Get your location</string>
+    <string name="yes_dialog_gps">yes</string>
+    <string name="no_dialog_gps">cancel</string>
+    <string name="search_cities">Search... Ex: London,UK</string>
 </resources>

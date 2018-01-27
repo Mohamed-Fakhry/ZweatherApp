@@ -16,6 +16,7 @@ import zmabrook.com.zweatherapp.Utils.LocationUtil;
 public interface HomeContract {
     public interface View{
         public void addWeatherItem(WeatherItem weatherItem);
+        public void addWeatherItems(ArrayList<WeatherItem> weatherItems);
         public void showToast(String message);
         public void showSearchSuggestions(ArrayList<StructuredFormatting> suggestions);
     }
@@ -24,6 +25,7 @@ public interface HomeContract {
         public boolean isFirstUseOfApp(Context context);
         public void loadFirstCity(Activity activity , LocationUtil locationUtil);
         public void getCitySuggestions(String query);
+        public void loadCityList(String ids);
     }
 
 

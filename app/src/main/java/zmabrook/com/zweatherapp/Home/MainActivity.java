@@ -1,20 +1,18 @@
 package zmabrook.com.zweatherapp.Home;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
-import com.google.android.gms.location.places.AutocompletePredictionBufferResponse;
-import com.google.android.gms.location.places.GeoDataClient;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.tasks.Task;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -24,13 +22,11 @@ import zmabrook.com.zweatherapp.Details.DetailsActivity;
 import zmabrook.com.zweatherapp.Entities.StructuredFormatting;
 import zmabrook.com.zweatherapp.Entities.WeatherItem;
 import zmabrook.com.zweatherapp.Home.Extras.HomeRecyclerViewAdapter;
-import zmabrook.com.zweatherapp.Listeners.AddCityListener;
 import zmabrook.com.zweatherapp.R;
 import zmabrook.com.zweatherapp.Utils.ConnectionUtil;
 import zmabrook.com.zweatherapp.Utils.LocationUtil;
 import zmabrook.com.zweatherapp.base.BaseActivity;
 
-import static zmabrook.com.zweatherapp.Configs.CommonConstants.ADD_CITY_LISTENER;
 import static zmabrook.com.zweatherapp.Configs.CommonConstants.CITY_NAME;
 
 /**
@@ -81,12 +77,24 @@ public class MainActivity extends BaseActivity implements HomeContract.View {
 
                 startDetailsActivity(searchSuggestion.getBody());
                 mSearchView.clearQuery();
+                mSearchView.clearSearchFocus();
+                View view = MainActivity.this.getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
             }
 
             @Override
             public void onSearchAction(String currentQuery) {
                 startDetailsActivity(currentQuery);
                 mSearchView.clearQuery();
+                mSearchView.clearSearchFocus();
+                View view = MainActivity.this.getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
             }
         });
         if (mPresenter.isFirstUseOfApp(this)) {
@@ -96,20 +104,15 @@ public class MainActivity extends BaseActivity implements HomeContract.View {
 
 
         } else {
+            SharedPreferences pref = getApplicationContext().getSharedPreferences(CommonConstants.SHARED_PREF_NAME, 0);
 
-
-            if (ConnectionUtil.isConnected(this)){
+            String ids = pref.getString(CommonConstants.ID_LIST, "");
+            if (ids.equals("")) {
                 mPresenter.loadFirstCity(this, locationUtil);
-
-                //load Data from cache
-                //show Data from cache
-
-            }else{
-                //load Data from cache
-                //get Id's from retrieved data
-                //show Data from cache
-                //cache data again
+            }else {
+                mPresenter.loadCityList(ids);
             }
+
 
         }
     }
@@ -117,10 +120,18 @@ public class MainActivity extends BaseActivity implements HomeContract.View {
     @Override
     public void addWeatherItem(WeatherItem weatherItem) {
 
-        adapter.addItem(weatherItem);
+        adapter.addItemWithToast(weatherItem);
         adapter.notifyDataSetChanged();
 
 
+    }
+
+    @Override
+    public void addWeatherItems(ArrayList<WeatherItem> weatherItems) {
+        for (int i =0 ; i < weatherItems.size() ; i++){
+            adapter.addItemWithoutToast(weatherItems.get(i));
+        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override

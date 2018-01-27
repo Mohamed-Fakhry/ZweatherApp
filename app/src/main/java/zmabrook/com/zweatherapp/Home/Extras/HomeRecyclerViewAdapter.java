@@ -14,8 +14,12 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,9 +67,9 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         holder.deleteImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                removeFromCache(itemsArrayList.get(position));
                 itemsArrayList.remove(position);
                 notifyDataSetChanged();
-                //TODO: remove from cache
             }
         });
 
@@ -103,7 +107,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         }
     }
 
-    public void addItem(WeatherItem item){
+    public void addItemWithToast(WeatherItem item){
         if (!IsAlreadyAdded(item)){
             if (itemsArrayList.size()<MAX_SIZE){
                 itemsArrayList.add(item);
@@ -116,6 +120,20 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         }
 
     }
+
+    public void addItemWithoutToast(WeatherItem item){
+        if (!IsAlreadyAdded(item)){
+            if (itemsArrayList.size()<MAX_SIZE){
+                itemsArrayList.add(item);
+                addTocache(item);
+            }else {
+                Toast.makeText(mcontext, R.string.max_number_of_cities,Toast.LENGTH_LONG).show();
+            }
+        }
+
+    }
+
+
 
 
     private void startDetailsActivity(String id){
@@ -138,7 +156,46 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
 
     private void addTocache(WeatherItem item){
+        SharedPreferences pref = mcontext.getApplicationContext().getSharedPreferences(CommonConstants.SHARED_PREF_NAME, 0);
+        SharedPreferences.Editor editor = pref.edit();
 
+        String result = pref.getString(CommonConstants.ID_LIST, "");
+        if (result.equals("")) {
+            result=item.getId();
+        }else {
+            result=result+","+item.getId();
+        }
+        editor.putString(CommonConstants.ID_LIST,result);
+        editor.commit();
 
+    }
+
+    private void removeFromCache(WeatherItem item){
+        SharedPreferences pref = mcontext.getApplicationContext().getSharedPreferences(CommonConstants.SHARED_PREF_NAME, 0);
+        SharedPreferences.Editor editor = pref.edit();
+        String result = pref.getString(CommonConstants.ID_LIST, "");
+
+        if (result.contains(item.getId())) {
+            String[] parts = result.split(",");
+            for (int i=0 ; i < parts.length ; i++){
+                if (parts[i].equals(item.getId())){
+                    parts=ArrayUtils.remove(parts,i);
+                    break;
+                }
+
+            }
+            result = Arrays.stream(parts).collect(Collectors.joining(","));
+            editor.putString(CommonConstants.ID_LIST,result);
+            editor.commit();
+        }
+        /*if (result.contains(item.getId())){
+            if (result.contains(","+item.getId())){
+                result.replace(","+item.getId(),"");
+            }else{
+                result.replace(item.getId(),"");
+            }
+            editor.putString(CommonConstants.ID_LIST,result);
+            editor.commit();
+        }*/
     }
 }

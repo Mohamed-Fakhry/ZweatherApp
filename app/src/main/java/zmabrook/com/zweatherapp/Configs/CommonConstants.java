@@ -14,6 +14,7 @@ public class CommonConstants {
     public final static String CITY_ID = "cityId";
     public final static String CITY_NAME = "cityName";
     public final static String ADD_CITY_LISTENER = "AddListener";
+    public final static String ID_LIST = "idList";
 
 
     public final static String WEATHER_API_KEY ="5f6507b6a5ec232d38442846cd5475a6";

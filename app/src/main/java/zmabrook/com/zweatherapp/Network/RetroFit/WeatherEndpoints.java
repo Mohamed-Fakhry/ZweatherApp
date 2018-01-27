@@ -6,6 +6,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import zmabrook.com.zweatherapp.Entities.FiveDaysResponse;
+import zmabrook.com.zweatherapp.Entities.ListOfIDsResponse;
 import zmabrook.com.zweatherapp.Entities.WeatherItem;
 
 /**
@@ -26,7 +27,7 @@ public interface WeatherEndpoints {
             ,@Query("q") String cityName );
 
     @GET("group")
-    Call<ArrayList<WeatherItem>> getWeatherItemsById(@Query("APPID") String weatherApiKey , @Query("units") String unit
+    Call<ListOfIDsResponse> getWeatherItemsById(@Query("APPID") String weatherApiKey , @Query("units") String unit
             , @Query("id") String citiesId );
 
     @GET("forecast")

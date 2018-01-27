@@ -2,6 +2,7 @@ package zmabrook.com.zweatherapp.Home.Extras;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import zmabrook.com.zweatherapp.Configs.CommonConstants;
 import zmabrook.com.zweatherapp.Details.DetailsActivity;
 import zmabrook.com.zweatherapp.Entities.WeatherItem;
 import zmabrook.com.zweatherapp.Listeners.AddCityListener;
@@ -105,6 +107,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         if (!IsAlreadyAdded(item)){
             if (itemsArrayList.size()<MAX_SIZE){
                 itemsArrayList.add(item);
+                addTocache(item);
             }else {
                 Toast.makeText(mcontext, R.string.max_number_of_cities,Toast.LENGTH_LONG).show();
             }
@@ -119,6 +122,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         if (ConnectionUtil.isConnected(mcontext)) {
             Intent intent = new Intent(mcontext, DetailsActivity.class);
             intent.putExtra(CITY_ID, id);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mcontext.startActivity(intent);
         }
     }
@@ -133,4 +137,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     }
 
 
+    private void addTocache(WeatherItem item){
+
+
+    }
 }

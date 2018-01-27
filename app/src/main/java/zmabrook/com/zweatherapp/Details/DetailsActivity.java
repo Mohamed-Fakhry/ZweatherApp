@@ -72,7 +72,7 @@ public class DetailsActivity extends BaseActivity implements DetailsContract.Vie
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new DetailsRecyclerViewAdapter(new ArrayList<WeatherItem>(),getApplicationContext());
-
+        mRecyclerView.setAdapter(adapter);
 
 
         if (mCityId !=null){
@@ -105,6 +105,7 @@ public class DetailsActivity extends BaseActivity implements DetailsContract.Vie
                 item.setId(response.getCity().getId());
                 item.setName(response.getCity().getName());
                 CommonConstants.home.addWeatherItem(item);
+                finish();
             }
         });
 

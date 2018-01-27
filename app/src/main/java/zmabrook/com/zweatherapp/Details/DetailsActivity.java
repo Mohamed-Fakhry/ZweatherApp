@@ -2,9 +2,18 @@ package zmabrook.com.zweatherapp.Details;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import zmabrook.com.zweatherapp.Details.Extras.DetailsRecyclerViewAdapter;
 import zmabrook.com.zweatherapp.Entities.FiveDaysResponse;
+import zmabrook.com.zweatherapp.Entities.WeatherItem;
 import zmabrook.com.zweatherapp.R;
 import zmabrook.com.zweatherapp.base.BaseActivity;
 
@@ -15,32 +24,52 @@ import static zmabrook.com.zweatherapp.Configs.CommonConstants.CITY_NAME;
  * Created by zMabrook on 26/01/18.
  */
 public class DetailsActivity extends BaseActivity implements DetailsContract.View{
+    @BindView(R.id.tempratureTextView)
+    TextView tempratureTextView;
+
+    @BindView(R.id.cityNameTextView)
+    TextView cityNameTextView;
+
+    @BindView(R.id.descriptionTextView)
+    TextView descriptionTextView;
+
+    @BindView(R.id.nextDaysRecyclerView)
+    RecyclerView mRecyclerView;
+
     private DetailsContract.Actions mPresenter;
-    private String cityId ;
-    private String cityName;
+    private String mCityId;
+    private String mCityName;
     ProgressDialog progress;
+    private DetailsRecyclerViewAdapter adapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+        ButterKnife.bind(this);
+
         mPresenter = new DetailsPresenter(this);
 
-        cityId = getIntent().getStringExtra(CITY_ID);
-        cityName = getIntent().getStringExtra(CITY_NAME);
+        mCityId = getIntent().getStringExtra(CITY_ID);
+        mCityName = getIntent().getStringExtra(CITY_NAME);
 
         progress = new ProgressDialog(this);
         progress.setTitle("Loading");
+        progress.setMessage("Please Wait");
         progress.setCancelable(false);
         progress.show();
 
 
-        progress.dismiss();
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new DetailsRecyclerViewAdapter(new ArrayList<WeatherItem>(),getApplicationContext());
 
 
-        if (cityId!=null){
-            mPresenter.getFiveDaysForecastByID(cityId);
-        }else if(cityName !=null){
-            mPresenter.getFiveDaysForecastByName(cityName);
+
+        if (mCityId !=null){
+            mPresenter.getFiveDaysForecastByID(mCityId);
+        }else if(mCityName !=null){
+            mPresenter.getFiveDaysForecastByName(mCityName);
         }
 
     }
@@ -48,8 +77,16 @@ public class DetailsActivity extends BaseActivity implements DetailsContract.Vie
 
     @Override
     public void loadData(FiveDaysResponse response) {
+        if (response == null){
+            showToastAndDismiss(getString(R.string.city_not_found));
+            return;
+        }
+        cityNameTextView.setText((response.getCity().getName()!=null)?response.getCity().getName():"");
+        descriptionTextView.setText((response.getList().get(0).getWeather().get(0).getDescription()!=null)?response.getList().get(0).getWeather().get(0).getDescription():"");
+        tempratureTextView.setText((String.valueOf(response.getList().get(0).getMain().getTemp())!=null)?(String.valueOf(response.getList().get(0).getMain().getTemp()))+"°":"");
 
-
+        adapter = new DetailsRecyclerViewAdapter(response.getList(),getApplicationContext());
+        mRecyclerView.setAdapter(adapter);
         progress.dismiss();
 
     }

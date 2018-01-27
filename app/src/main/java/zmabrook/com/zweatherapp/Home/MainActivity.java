@@ -57,6 +57,7 @@ public class MainActivity extends BaseActivity implements HomeContract.View {
         mRecyclerView.setAdapter(adapter);
 
 
+        mSearchView.setCloseSearchOnKeyboardDismiss(true);
         mSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
             @Override
             public void onSearchTextChanged(String oldQuery, final String newQuery) {

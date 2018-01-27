@@ -17,28 +17,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="30sp"
-        android:gravity="center"
-        android:text="9ْ C"/>
+        android:gravity="center"/>
     <TextView
         android:id="@+id/cityNameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="40sp"
-        android:gravity="center_horizontal|bottom"
-        android:text="Cairo"/>
+        android:gravity="center_horizontal|bottom" />
     <TextView
         android:id="@+id/descriptionTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:gravity="center_horizontal|top"
-        android:text="Partly Cloudy"/>
+        android:gravity="center_horizontal|top" />
 
 </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/nextDaysRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/mainDataLinearLayout"/>
+        android:layout_below="@+id/mainDataLinearLayout"
+        android:fadeScrollbars="false"/>
 
 </RelativeLayout>

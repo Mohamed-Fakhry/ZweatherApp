@@ -36,7 +36,7 @@ public class WeatherItem extends BaseEntity implements Parcelable
     private double dt;
     @SerializedName("id")
     @Expose
-    private double id;
+    private String id;
     @SerializedName("name")
     @Expose
     private String name;
@@ -72,7 +72,7 @@ public class WeatherItem extends BaseEntity implements Parcelable
         this.rain = ((Rain) in.readValue((Rain.class.getClassLoader())));
         this.clouds = ((Clouds) in.readValue((Clouds.class.getClassLoader())));
         this.dt = ((int) in.readValue((int.class.getClassLoader())));
-        this.id = ((int) in.readValue((int.class.getClassLoader())));
+        this.id = ((String) in.readValue((int.class.getClassLoader())));
         this.name = ((String) in.readValue((String.class.getClassLoader())));
         this.cod = ((int) in.readValue((int.class.getClassLoader())));
         this.dtTxt = ((String) in.readValue((String.class.getClassLoader())));
@@ -146,11 +146,11 @@ public class WeatherItem extends BaseEntity implements Parcelable
         this.dt = dt;
     }
 
-    public double getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(double id) {
+    public void setId(String id) {
         this.id = id;
     }
 

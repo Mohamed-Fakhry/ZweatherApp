@@ -7,6 +7,8 @@ package zmabrook.com.zweatherapp.Configs;
 public class CommonConstants {
     public final static String SHARED_PREF_NAME = "ZWeatherPref";
     public final static String IS_FIRST_USE = "IS_FIRST_USE";
+    public final static String CITY_ID = "cityId";
+    public final static String CITY_NAME = "cityName";
 
 
     public final static String WEATHER_API_KEY ="5f6507b6a5ec232d38442846cd5475a6";

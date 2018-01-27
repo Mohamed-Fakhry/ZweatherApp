@@ -1,6 +1,8 @@
 package zmabrook.com.zweatherapp.Home.Extras;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +17,11 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import zmabrook.com.zweatherapp.Details.DetailsActivity;
 import zmabrook.com.zweatherapp.Entities.WeatherItem;
 import zmabrook.com.zweatherapp.R;
 
+import static zmabrook.com.zweatherapp.Configs.CommonConstants.CITY_ID;
 import static zmabrook.com.zweatherapp.Configs.CommonConstants.ICONS_BASIC_URL;
 
 /**
@@ -58,6 +62,13 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
                 //TODO: remove from cache
             }
         });
+
+        holder.itemCardview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDetailsActivity(String.valueOf(itemsArrayList.get(position).getId()));
+            }
+        });
     }
 
     @Override
@@ -71,6 +82,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         @BindView(R.id.tempratureTextView)TextView tempratureTextView;
         @BindView(R.id.deleteCityImageView)ImageView deleteImageView;
         @BindView(R.id.iconImageview)ImageView iconImageview;
+        @BindView(R.id.itemCardview)CardView itemCardview;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -93,5 +105,11 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
         }
     }
 
+
+    private void startDetailsActivity(String id){
+        Intent intent = new Intent(mcontext, DetailsActivity.class);
+        intent.putExtra(CITY_ID,id);
+        mcontext.startActivity(intent);
+    }
 
 }

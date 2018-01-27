@@ -116,17 +116,20 @@ public class LocationUtil extends Service implements LocationListener {
     }
 
     public String getLongitude() {
-        if (loc != null) {
+        if (loc != null && loc.getLongitude()!=0) {
             longitude = loc.getLongitude();
+            return String.valueOf(longitude);
+
         }
-        return String.valueOf(longitude);
+        return null;
     }
 
     public String getLatitude() {
-        if (loc != null) {
+        if (loc != null && loc.getLatitude()!=0) {
             latitude = loc.getLatitude();
+            return String.valueOf(latitude);
         }
-        return String.valueOf(latitude);
+        return null;
     }
 
     public boolean canGetLocation() {

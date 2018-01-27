@@ -11,7 +11,7 @@ public class Rain extends BaseEntity implements Parcelable {
 
     @SerializedName("3h")
     @Expose
-    private int _3h;
+    private double _3h;
     public final static Parcelable.Creator<Rain> CREATOR = new Creator<Rain>() {
 
 
@@ -35,11 +35,11 @@ public class Rain extends BaseEntity implements Parcelable {
     public Rain() {
     }
 
-    public int get3h() {
+    public double get3h() {
         return _3h;
     }
 
-    public void set3h(int _3h) {
+    public void set3h(double _3h) {
         this._3h = _3h;
     }
 

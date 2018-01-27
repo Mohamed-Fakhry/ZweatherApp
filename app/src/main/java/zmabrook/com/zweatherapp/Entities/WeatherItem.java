@@ -33,16 +33,16 @@ public class WeatherItem extends BaseEntity implements Parcelable
     private Clouds clouds;
     @SerializedName("dt")
     @Expose
-    private int dt;
+    private double dt;
     @SerializedName("id")
     @Expose
-    private int id;
+    private double id;
     @SerializedName("name")
     @Expose
     private String name;
     @SerializedName("cod")
     @Expose
-    private int cod;
+    private double cod;
     @SerializedName("dt_txt")
     @Expose
     private String dtTxt;
@@ -138,19 +138,19 @@ public class WeatherItem extends BaseEntity implements Parcelable
         this.clouds = clouds;
     }
 
-    public int getDt() {
+    public double getDt() {
         return dt;
     }
 
-    public void setDt(int dt) {
+    public void setDt(double dt) {
         this.dt = dt;
     }
 
-    public int getId() {
+    public double getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(double id) {
         this.id = id;
     }
 
@@ -162,11 +162,11 @@ public class WeatherItem extends BaseEntity implements Parcelable
         this.name = name;
     }
 
-    public int getCod() {
+    public double getCod() {
         return cod;
     }
 
-    public void setCod(int cod) {
+    public void setCod(double cod) {
         this.cod = cod;
     }
 

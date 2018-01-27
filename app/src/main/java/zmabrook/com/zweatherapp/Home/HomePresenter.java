@@ -78,31 +78,14 @@ public class HomePresenter extends BasePresenter implements HomeContract.Actions
 
 
         }else{
-            if (locationUtil.canGetLocation())
+            if (locationUtil.canGetLocation()&&
+                    locationUtil.getLatitude()!=null && locationUtil.getLongitude()!=null)
                 getWeatherItemByLatLong(locationUtil.getLatitude(),locationUtil.getLongitude());
             else
             getWeatherItemByName(DEFAULT_CITY);
         }
 
     }
-
-    @Override
-    public void getCitySuggestions(String query) {
-        placesEndpoints = RetrofitPlacesClient.getClient().create(PlacesEndpoints.class);
-        Call<AutoComplete.AutoCompleteResult> autoCompleteResultCall = placesEndpoints.getCitySuggestions(query,"(cities)",GPLACES_API_KEY);
-        autoCompleteResultCall.enqueue(new Callback<AutoComplete.AutoCompleteResult>() {
-            @Override
-            public void onResponse(Call<AutoComplete.AutoCompleteResult> call, Response<AutoComplete.AutoCompleteResult> response) {
-                mView.showSearchSuggestions(generateSuggestionsFromApiResult(response.body()));
-            }
-
-            @Override
-            public void onFailure(Call<AutoComplete.AutoCompleteResult> call, Throwable t) {
-                mView.showToast(t.getMessage());
-            }
-        });
-    }
-
 
     private void getWeatherItemByName(String cityName){
         Call<WeatherItem> call = weatherEndpoints.getWeatherItemByName(WEATHER_API_KEY,WEATHER_UNIT_CELICUS,cityName);
@@ -143,5 +126,22 @@ public class HomePresenter extends BasePresenter implements HomeContract.Actions
         }
 
         return suggestions;
+    }
+
+    @Override
+    public void getCitySuggestions(String query) {
+        placesEndpoints = RetrofitPlacesClient.getClient().create(PlacesEndpoints.class);
+        Call<AutoComplete.AutoCompleteResult> autoCompleteResultCall = placesEndpoints.getCitySuggestions(query,"(cities)",GPLACES_API_KEY);
+        autoCompleteResultCall.enqueue(new Callback<AutoComplete.AutoCompleteResult>() {
+            @Override
+            public void onResponse(Call<AutoComplete.AutoCompleteResult> call, Response<AutoComplete.AutoCompleteResult> response) {
+                mView.showSearchSuggestions(generateSuggestionsFromApiResult(response.body()));
+            }
+
+            @Override
+            public void onFailure(Call<AutoComplete.AutoCompleteResult> call, Throwable t) {
+                mView.showToast(t.getMessage());
+            }
+        });
     }
 }

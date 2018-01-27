@@ -12,7 +12,7 @@ public class City extends BaseEntity implements Parcelable
 
     @SerializedName("id")
     @Expose
-    private int id;
+    private String id;
     @SerializedName("name")
     @Expose
     private String name;
@@ -34,18 +34,18 @@ public class City extends BaseEntity implements Parcelable
             ;
 
     protected City(Parcel in) {
-        this.id = ((int) in.readValue((int.class.getClassLoader())));
+        this.id = ((String) in.readValue((String.class.getClassLoader())));
         this.name = ((String) in.readValue((String.class.getClassLoader())));
     }
 
     public City() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

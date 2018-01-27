@@ -14,19 +14,23 @@ import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.tasks.Task;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import zmabrook.com.zweatherapp.Configs.CommonConstants;
 import zmabrook.com.zweatherapp.Details.DetailsActivity;
 import zmabrook.com.zweatherapp.Entities.StructuredFormatting;
 import zmabrook.com.zweatherapp.Entities.WeatherItem;
 import zmabrook.com.zweatherapp.Home.Extras.HomeRecyclerViewAdapter;
+import zmabrook.com.zweatherapp.Listeners.AddCityListener;
 import zmabrook.com.zweatherapp.R;
 import zmabrook.com.zweatherapp.Utils.ConnectionUtil;
 import zmabrook.com.zweatherapp.Utils.LocationUtil;
 import zmabrook.com.zweatherapp.base.BaseActivity;
 
+import static zmabrook.com.zweatherapp.Configs.CommonConstants.ADD_CITY_LISTENER;
 import static zmabrook.com.zweatherapp.Configs.CommonConstants.CITY_NAME;
 
 /**
@@ -50,6 +54,7 @@ public class MainActivity extends BaseActivity implements HomeContract.View {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        CommonConstants.home = this;
         mPresenter = new HomePresenter(this);
         locationUtil = new LocationUtil(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -130,8 +135,11 @@ public class MainActivity extends BaseActivity implements HomeContract.View {
     }
 
     private void startDetailsActivity(String cityname){
-        Intent intent = new Intent(this, DetailsActivity.class);
-        intent.putExtra(CITY_NAME,cityname);
-        startActivity(intent);
+        if (ConnectionUtil.isConnected(this)) {
+            Intent intent = new Intent(this, DetailsActivity.class);
+            intent.putExtra(CITY_NAME, cityname);
+            startActivity(intent);
+        }
     }
+
 }

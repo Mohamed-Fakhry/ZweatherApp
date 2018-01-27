@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -11,12 +13,15 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import zmabrook.com.zweatherapp.Configs.CommonConstants;
 import zmabrook.com.zweatherapp.Details.Extras.DetailsRecyclerViewAdapter;
 import zmabrook.com.zweatherapp.Entities.FiveDaysResponse;
 import zmabrook.com.zweatherapp.Entities.WeatherItem;
+import zmabrook.com.zweatherapp.Listeners.AddCityListener;
 import zmabrook.com.zweatherapp.R;
 import zmabrook.com.zweatherapp.base.BaseActivity;
 
+import static zmabrook.com.zweatherapp.Configs.CommonConstants.ADD_CITY_LISTENER;
 import static zmabrook.com.zweatherapp.Configs.CommonConstants.CITY_ID;
 import static zmabrook.com.zweatherapp.Configs.CommonConstants.CITY_NAME;
 
@@ -36,12 +41,15 @@ public class DetailsActivity extends BaseActivity implements DetailsContract.Vie
     @BindView(R.id.nextDaysRecyclerView)
     RecyclerView mRecyclerView;
 
+    @BindView(R.id.addCityToHomeButton)
+    Button addCityToHomeButton;
+
     private DetailsContract.Actions mPresenter;
     private String mCityId;
     private String mCityName;
     ProgressDialog progress;
     private DetailsRecyclerViewAdapter adapter;
-
+    private AddCityListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +61,7 @@ public class DetailsActivity extends BaseActivity implements DetailsContract.Vie
 
         mCityId = getIntent().getStringExtra(CITY_ID);
         mCityName = getIntent().getStringExtra(CITY_NAME);
+        listener = (AddCityListener) getIntent().getSerializableExtra(ADD_CITY_LISTENER);
 
         progress = new ProgressDialog(this);
         progress.setTitle("Loading");
@@ -76,7 +85,7 @@ public class DetailsActivity extends BaseActivity implements DetailsContract.Vie
 
 
     @Override
-    public void loadData(FiveDaysResponse response) {
+    public void loadData(final FiveDaysResponse response) {
         if (response == null){
             showToastAndDismiss(getString(R.string.city_not_found));
             return;
@@ -88,6 +97,16 @@ public class DetailsActivity extends BaseActivity implements DetailsContract.Vie
         adapter = new DetailsRecyclerViewAdapter(response.getList(),getApplicationContext());
         mRecyclerView.setAdapter(adapter);
         progress.dismiss();
+
+        addCityToHomeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WeatherItem item = response.getList().get(0);
+                item.setId(response.getCity().getId());
+                item.setName(response.getCity().getName());
+                CommonConstants.home.addWeatherItem(item);
+            }
+        });
 
     }
 

@@ -13,14 +13,18 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import zmabrook.com.zweatherapp.Details.DetailsActivity;
 import zmabrook.com.zweatherapp.Entities.WeatherItem;
+import zmabrook.com.zweatherapp.Listeners.AddCityListener;
 import zmabrook.com.zweatherapp.R;
+import zmabrook.com.zweatherapp.Utils.ConnectionUtil;
 
+import static zmabrook.com.zweatherapp.Configs.CommonConstants.ADD_CITY_LISTENER;
 import static zmabrook.com.zweatherapp.Configs.CommonConstants.CITY_ID;
 import static zmabrook.com.zweatherapp.Configs.CommonConstants.ICONS_BASIC_URL;
 
@@ -98,18 +102,35 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     }
 
     public void addItem(WeatherItem item){
-        if (itemsArrayList.size()<MAX_SIZE){
-            itemsArrayList.add(item);
-        }else {
-            Toast.makeText(mcontext, R.string.max_number_of_cities,Toast.LENGTH_LONG).show();
+        if (!IsAlreadyAdded(item)){
+            if (itemsArrayList.size()<MAX_SIZE){
+                itemsArrayList.add(item);
+            }else {
+                Toast.makeText(mcontext, R.string.max_number_of_cities,Toast.LENGTH_LONG).show();
+            }
+        }else{
+            Toast.makeText(mcontext, R.string.city_already_added,Toast.LENGTH_LONG).show();
         }
+
     }
 
 
     private void startDetailsActivity(String id){
-        Intent intent = new Intent(mcontext, DetailsActivity.class);
-        intent.putExtra(CITY_ID,id);
-        mcontext.startActivity(intent);
+        if (ConnectionUtil.isConnected(mcontext)) {
+            Intent intent = new Intent(mcontext, DetailsActivity.class);
+            intent.putExtra(CITY_ID, id);
+            mcontext.startActivity(intent);
+        }
     }
+
+    private  boolean IsAlreadyAdded(WeatherItem item){
+        boolean flag = false;
+        for (int i=0 ; i < itemsArrayList.size() ; i++){
+            if (itemsArrayList.get(i).getId().equals(item.getId()))
+                flag=true;
+        }
+        return flag;
+    }
+
 
 }

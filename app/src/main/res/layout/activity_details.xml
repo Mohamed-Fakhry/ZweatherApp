@@ -11,7 +11,8 @@
     android:layout_height="wrap_content"
     android:minHeight="100dp"
     android:layout_margin="16dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_below="@+id/addCityToHomeButton">
     <TextView
         android:id="@+id/tempratureTextView"
         android:layout_width="match_parent"
@@ -39,4 +40,12 @@
         android:layout_below="@+id/mainDataLinearLayout"
         android:fadeScrollbars="false"/>
 
+    <Button
+        android:id="@+id/addCityToHomeButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_to_home"
+        android:background="@color/colorAccent"
+        android:textColor="@android:color/background_dark"
+        android:layout_alignParentRight="true"/>
 </RelativeLayout>

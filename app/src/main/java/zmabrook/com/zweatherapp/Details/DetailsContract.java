@@ -13,7 +13,4 @@ public interface DetailsContract {
 
     }
 
-    public interface model{
-
-    }
 }

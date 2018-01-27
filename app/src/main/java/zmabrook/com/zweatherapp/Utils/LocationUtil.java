@@ -15,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import zmabrook.com.zweatherapp.Listeners.GenericListener;
 import zmabrook.com.zweatherapp.R;
 
 /**
@@ -114,25 +115,25 @@ public class LocationUtil extends Service implements LocationListener {
         return loc;
     }
 
-    public double getLongitude() {
+    public String getLongitude() {
         if (loc != null) {
             longitude = loc.getLongitude();
         }
-        return longitude;
+        return String.valueOf(longitude);
     }
 
-    public double getLatitude() {
+    public String getLatitude() {
         if (loc != null) {
             latitude = loc.getLatitude();
         }
-        return latitude;
+        return String.valueOf(latitude);
     }
 
     public boolean canGetLocation() {
         return this.canGetLocation;
     }
 
-    public void showSettingsAlert() {
+    public void showSettingsAlert(final GenericListener listener) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
         alertDialog.setTitle(R.string.title_gps);
         alertDialog.setMessage(R.string.detalis_dialog_Gps);
@@ -140,11 +141,13 @@ public class LocationUtil extends Service implements LocationListener {
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 mContext.startActivity(intent);
+                listener.onSuccess();
             }
         });
         alertDialog.setNegativeButton(R.string.no_dialog_gps, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
+                listener.onFailure();
             }
         });
         alertDialog.show();

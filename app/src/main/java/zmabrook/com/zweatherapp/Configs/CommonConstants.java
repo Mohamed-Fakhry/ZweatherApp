@@ -5,10 +5,16 @@ package zmabrook.com.zweatherapp.Configs;
  */
 
 public class CommonConstants {
-    public final static String sharedPrefName = "ZWeatherPref";
-    public final static String isFirstUse = "isFirstUse";
+    public final static String SHARED_PREF_NAME = "ZWeatherPref";
+    public final static String IS_FIRST_USE = "IS_FIRST_USE";
 
 
-    public final static String WeatherApiKey ="5f6507b6a5ec232d38442846cd5475a6";
+    public final static String WEATHER_API_KEY ="5f6507b6a5ec232d38442846cd5475a6";
+    public final static String GPLACES_API_KEY ="AIzaSyBTy8il7bgaHFFXje6Um-flveY5z9mCK4E";
+    public final static String WEATHER_UNIT_CELICUS ="metric";
+    public final static String DEFAULT_CITY ="London,uk";
+    public final static String ICONS_BASIC_URL ="http://openweathermap.org/img/w/";
+
+
 
 }

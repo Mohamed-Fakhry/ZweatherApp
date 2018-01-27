@@ -11,10 +11,10 @@ public class Coord extends BaseEntity implements Parcelable
 
     @SerializedName("lon")
     @Expose
-    private int lon;
+    private double lon;
     @SerializedName("lat")
     @Expose
-    private int lat;
+    private double lat;
     public final static Parcelable.Creator<Coord> CREATOR = new Creator<Coord>() {
 
 
@@ -40,19 +40,19 @@ public class Coord extends BaseEntity implements Parcelable
     public Coord() {
     }
 
-    public int getLon() {
+    public double getLon() {
         return lon;
     }
 
-    public void setLon(int lon) {
+    public void setLon(double lon) {
         this.lon = lon;
     }
 
-    public int getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public void setLat(int lat) {
+    public void setLat(double lat) {
         this.lat = lat;
     }
 

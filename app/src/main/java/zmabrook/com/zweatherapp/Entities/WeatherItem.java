@@ -43,6 +43,9 @@ public class WeatherItem extends BaseEntity implements Parcelable
     @SerializedName("cod")
     @Expose
     private int cod;
+    @SerializedName("dt_txt")
+    @Expose
+    private String dtTxt;
     public final static Parcelable.Creator<WeatherItem> CREATOR = new Creator<WeatherItem>() {
 
 
@@ -72,6 +75,8 @@ public class WeatherItem extends BaseEntity implements Parcelable
         this.id = ((int) in.readValue((int.class.getClassLoader())));
         this.name = ((String) in.readValue((String.class.getClassLoader())));
         this.cod = ((int) in.readValue((int.class.getClassLoader())));
+        this.dtTxt = ((String) in.readValue((String.class.getClassLoader())));
+
     }
 
     public WeatherItem() {
@@ -165,6 +170,15 @@ public class WeatherItem extends BaseEntity implements Parcelable
         this.cod = cod;
     }
 
+
+    public String getDtTxt() {
+        return dtTxt;
+    }
+
+    public void setDtTxt(String dtTxt) {
+        this.dtTxt = dtTxt;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(coord);
         dest.writeValue(sys);
@@ -177,6 +191,8 @@ public class WeatherItem extends BaseEntity implements Parcelable
         dest.writeValue(id);
         dest.writeValue(name);
         dest.writeValue(cod);
+        dest.writeValue(dtTxt);
+
     }
 
     public int describeContents() {

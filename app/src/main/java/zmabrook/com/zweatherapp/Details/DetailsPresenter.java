@@ -8,7 +8,6 @@ import zmabrook.com.zweatherapp.base.BasePresenter;
 
 public class DetailsPresenter extends BasePresenter implements DetailsContract.Actions {
     private DetailsContract.View mView;
-    private DetailsContract.model mModel;
 
     public DetailsPresenter(DetailsContract.View mView) {
         this.mView = mView;

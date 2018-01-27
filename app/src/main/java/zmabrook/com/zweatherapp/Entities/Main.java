@@ -4,6 +4,8 @@ package zmabrook.com.zweatherapp.Entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.Parcelable.Creator;
+
+import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -15,10 +17,10 @@ public class Main extends BaseEntity implements Parcelable
     private double temp;
     @SerializedName("humidity")
     @Expose
-    private int humidity;
+    private double humidity;
     @SerializedName("pressure")
     @Expose
-    private int pressure;
+    private double pressure;
     @SerializedName("temp_min")
     @Expose
     private double tempMin;
@@ -44,8 +46,8 @@ public class Main extends BaseEntity implements Parcelable
 
     protected Main(Parcel in) {
         this.temp = ((double) in.readValue((double.class.getClassLoader())));
-        this.humidity = ((int) in.readValue((int.class.getClassLoader())));
-        this.pressure = ((int) in.readValue((int.class.getClassLoader())));
+        this.humidity = ((double) in.readValue((double.class.getClassLoader())));
+        this.pressure = ((double) in.readValue((double.class.getClassLoader())));
         this.tempMin = ((double) in.readValue((double.class.getClassLoader())));
         this.tempMax = ((double) in.readValue((double.class.getClassLoader())));
     }
@@ -61,19 +63,19 @@ public class Main extends BaseEntity implements Parcelable
         this.temp = temp;
     }
 
-    public int getHumidity() {
+    public double getHumidity() {
         return humidity;
     }
 
-    public void setHumidity(int humidity) {
+    public void setHumidity(double humidity) {
         this.humidity = humidity;
     }
 
-    public int getPressure() {
+    public double getPressure() {
         return pressure;
     }
 
-    public void setPressure(int pressure) {
+    public void setPressure(double pressure) {
         this.pressure = pressure;
     }
 
@@ -104,5 +106,6 @@ public class Main extends BaseEntity implements Parcelable
     public int describeContents() {
         return 0;
     }
+
 
 }

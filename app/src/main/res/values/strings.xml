@@ -6,4 +6,6 @@
     <string name="yes_dialog_gps">yes</string>
     <string name="no_dialog_gps">cancel</string>
     <string name="search_cities">Search... Ex: London,UK</string>
+    <string name="no_internet_message">No internet connection</string>
+    <string name="max_number_of_cities">You can add up to 5 cities only</string>
 </resources>

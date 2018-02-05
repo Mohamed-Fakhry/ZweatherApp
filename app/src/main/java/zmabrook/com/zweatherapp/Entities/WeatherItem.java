@@ -1,36 +1,48 @@
 package zmabrook.com.zweatherapp.Entities;
 
 import java.util.List;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.Parcelable.Creator;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class WeatherItem extends BaseEntity implements Parcelable
-{
+import io.objectbox.annotation.Backlink;
+import io.objectbox.annotation.Entity;
+import io.objectbox.annotation.Id;
+import io.objectbox.relation.ToMany;
+import io.objectbox.relation.ToOne;
+
+@Entity
+public class WeatherItem extends BaseEntity implements Parcelable {
+
+    @Id
+    public long databaseId;
 
     @SerializedName("coord")
     @Expose
-    private Coord coord;
+    private ToOne<Coord> coord;
     @SerializedName("sys")
     @Expose
-    private Sys sys;
+    private ToOne<Sys> sys;
     @SerializedName("weather")
     @Expose
-    private List<Weather> weather = null;
+    @Backlink
+    private ToMany<Weather> weather = null;
     @SerializedName("main")
     @Expose
-    private Main main;
+    private ToOne<Main> main;
     @SerializedName("wind")
     @Expose
-    private Wind wind;
+    private ToOne<Wind> wind;
     @SerializedName("rain")
     @Expose
-    private Rain rain;
+    private ToOne<Rain> rain;
     @SerializedName("clouds")
     @Expose
-    private Clouds clouds;
+    private ToOne<Clouds> clouds;
     @SerializedName("dt")
     @Expose
     private double dt;
@@ -46,96 +58,64 @@ public class WeatherItem extends BaseEntity implements Parcelable
     @SerializedName("dt_txt")
     @Expose
     private String dtTxt;
-    public final static Parcelable.Creator<WeatherItem> CREATOR = new Creator<WeatherItem>() {
-
-
-        @SuppressWarnings({
-                "unchecked"
-        })
-        public WeatherItem createFromParcel(Parcel in) {
-            return new WeatherItem(in);
-        }
-
-        public WeatherItem[] newArray(int size) {
-            return (new WeatherItem[size]);
-        }
-
-    }
-            ;
-
-    protected WeatherItem(Parcel in) {
-        this.coord = ((Coord) in.readValue((Coord.class.getClassLoader())));
-        this.sys = ((Sys) in.readValue((Sys.class.getClassLoader())));
-        in.readList(this.weather, (zmabrook.com.zweatherapp.Entities.Weather.class.getClassLoader()));
-        this.main = ((Main) in.readValue((Main.class.getClassLoader())));
-        this.wind = ((Wind) in.readValue((Wind.class.getClassLoader())));
-        this.rain = ((Rain) in.readValue((Rain.class.getClassLoader())));
-        this.clouds = ((Clouds) in.readValue((Clouds.class.getClassLoader())));
-        this.dt = ((int) in.readValue((int.class.getClassLoader())));
-        this.id = ((String) in.readValue((int.class.getClassLoader())));
-        this.name = ((String) in.readValue((String.class.getClassLoader())));
-        this.cod = ((int) in.readValue((int.class.getClassLoader())));
-        this.dtTxt = ((String) in.readValue((String.class.getClassLoader())));
-
-    }
 
     public WeatherItem() {
     }
 
-    public Coord getCoord() {
+    public ToOne<Coord> getCoord() {
         return coord;
     }
 
     public void setCoord(Coord coord) {
-        this.coord = coord;
+        this.coord.setTarget(coord);
     }
 
-    public Sys getSys() {
+    public ToOne<Sys> getSys() {
         return sys;
     }
 
     public void setSys(Sys sys) {
-        this.sys = sys;
+        this.sys.setTarget(sys);
     }
 
     public List<Weather> getWeather() {
         return weather;
     }
 
-    public void setWeather(List<Weather> weather) {
-        this.weather = weather;
+    public void setWeather(List<Weather> weathers) {
+        this.weather.addAll(weathers);
     }
 
-    public Main getMain() {
+    public ToOne<Main> getMain() {
         return main;
     }
 
     public void setMain(Main main) {
-        this.main = main;
+        this.main.setTarget(main);
     }
 
-    public Wind getWind() {
+    public ToOne<Wind> getWind() {
         return wind;
     }
 
     public void setWind(Wind wind) {
-        this.wind = wind;
+        this.wind.setTarget(wind);
     }
 
-    public Rain getRain() {
+    public ToOne<Rain> getRain() {
         return rain;
     }
 
     public void setRain(Rain rain) {
-        this.rain = rain;
+        this.rain.setTarget(rain);
     }
 
-    public Clouds getClouds() {
+    public ToOne<Clouds> getClouds() {
         return clouds;
     }
 
     public void setClouds(Clouds clouds) {
-        this.clouds = clouds;
+        this.clouds.setTarget(clouds);
     }
 
     public double getDt() {
@@ -179,24 +159,54 @@ public class WeatherItem extends BaseEntity implements Parcelable
         this.dtTxt = dtTxt;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(coord);
-        dest.writeValue(sys);
-        dest.writeList(weather);
-        dest.writeValue(main);
-        dest.writeValue(wind);
-        dest.writeValue(rain);
-        dest.writeValue(clouds);
-        dest.writeValue(dt);
-        dest.writeValue(id);
-        dest.writeValue(name);
-        dest.writeValue(cod);
-        dest.writeValue(dtTxt);
 
-    }
-
+    @Override
     public int describeContents() {
         return 0;
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.databaseId);
+        dest.writeSerializable(this.coord);
+        dest.writeSerializable(this.sys);
+//        dest.writeTypedList(this.weather);
+        dest.writeSerializable(this.main);
+        dest.writeSerializable(this.wind);
+        dest.writeSerializable(this.rain);
+        dest.writeSerializable(this.clouds);
+        dest.writeDouble(this.dt);
+        dest.writeString(this.id);
+        dest.writeString(this.name);
+        dest.writeDouble(this.cod);
+        dest.writeString(this.dtTxt);
+    }
+
+    protected WeatherItem(Parcel in) {
+        this.databaseId = in.readLong();
+        this.coord = (ToOne<Coord>) in.readSerializable();
+        this.sys = (ToOne<Sys>) in.readSerializable();
+//        this.weather = in.createTypedArrayList(Weather.CREATOR);
+        this.main = (ToOne<Main>) in.readSerializable();
+        this.wind = (ToOne<Wind>) in.readSerializable();
+        this.rain = (ToOne<Rain>) in.readSerializable();
+        this.clouds = (ToOne<Clouds>) in.readSerializable();
+        this.dt = in.readDouble();
+        this.id = in.readString();
+        this.name = in.readString();
+        this.cod = in.readDouble();
+        this.dtTxt = in.readString();
+    }
+
+    public static final Creator<WeatherItem> CREATOR = new Creator<WeatherItem>() {
+        @Override
+        public WeatherItem createFromParcel(Parcel source) {
+            return new WeatherItem(source);
+        }
+
+        @Override
+        public WeatherItem[] newArray(int size) {
+            return new WeatherItem[size];
+        }
+    };
 }

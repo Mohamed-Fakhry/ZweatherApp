@@ -7,8 +7,14 @@ import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import io.objectbox.annotation.Entity;
+import io.objectbox.annotation.Id;
+
+@Entity
 public class Wind extends BaseEntity implements Parcelable
 {
+    @Id
+    public long id;
 
     @SerializedName("speed")
     @Expose
@@ -66,4 +72,11 @@ public class Wind extends BaseEntity implements Parcelable
         return 0;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

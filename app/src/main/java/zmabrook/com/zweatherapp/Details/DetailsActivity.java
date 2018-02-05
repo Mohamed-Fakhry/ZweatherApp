@@ -92,7 +92,7 @@ public class DetailsActivity extends BaseActivity implements DetailsContract.Vie
         }
         cityNameTextView.setText((response.getCity().getName()!=null)?response.getCity().getName():"");
         descriptionTextView.setText((response.getList().get(0).getWeather().get(0).getDescription()!=null)?response.getList().get(0).getWeather().get(0).getDescription():"");
-        tempratureTextView.setText((String.valueOf(response.getList().get(0).getMain().getTemp())!=null)?(String.valueOf(response.getList().get(0).getMain().getTemp()))+"°":"");
+        tempratureTextView.setText((String.valueOf(response.getList().get(0).getMain().getTarget().getTemp())!=null)?(String.valueOf(response.getList().get(0).getMain().getTarget().getTemp()))+"°":"");
 
         adapter = new DetailsRecyclerViewAdapter(response.getList(),getApplicationContext());
         mRecyclerView.setAdapter(adapter);

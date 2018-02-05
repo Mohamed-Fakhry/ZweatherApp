@@ -69,7 +69,7 @@ public class DetailsRecyclerViewAdapter extends RecyclerView.Adapter<DetailsRecy
             holder.nameTextView.setText(itemsArrayList.get(position).getDtTxt());
         }
         holder.descriptionTextView.setText(itemsArrayList.get(position).getWeather().get(0).getDescription());
-        holder.tempratureTextView.setText(String.valueOf(itemsArrayList.get(position).getMain().getTemp())+"°");
+        holder.tempratureTextView.setText(String.valueOf(itemsArrayList.get(position).getMain().getTarget().getTemp())+"°");
         Picasso.with(mcontext)
                 .load(ICONS_BASIC_URL+itemsArrayList.get(position).getWeather().get(0).getIcon()+".png")
                 .into(holder.iconImageview);

@@ -9,8 +9,15 @@ import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import io.objectbox.annotation.Entity;
+import io.objectbox.annotation.Id;
+
+@Entity
 public class Main extends BaseEntity implements Parcelable
 {
+
+    @Id
+    public long id;
 
     @SerializedName("temp")
     @Expose
@@ -107,5 +114,11 @@ public class Main extends BaseEntity implements Parcelable
         return 0;
     }
 
+    public long getId() {
+        return id;
+    }
 
+    public void setId(long id) {
+        this.id = id;
+    }
 }

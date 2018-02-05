@@ -6,8 +6,15 @@ import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import io.objectbox.annotation.Entity;
+import io.objectbox.annotation.Id;
+import io.objectbox.relation.ToOne;
+
+@Entity
 public class Weather extends BaseEntity implements Parcelable
 {
+    @Id
+    public long databaseId;
 
     @SerializedName("id")
     @Expose
@@ -21,6 +28,9 @@ public class Weather extends BaseEntity implements Parcelable
     @SerializedName("icon")
     @Expose
     private String icon;
+
+    public ToOne<WeatherItem> weatherItem;
+
     public final static Parcelable.Creator<Weather> CREATOR = new Creator<Weather>() {
 
 
@@ -91,4 +101,11 @@ public class Weather extends BaseEntity implements Parcelable
         return 0;
     }
 
+    public long getDatabaseId() {
+        return databaseId;
+    }
+
+    public void setDatabaseId(long databaseId) {
+        this.databaseId = databaseId;
+    }
 }
